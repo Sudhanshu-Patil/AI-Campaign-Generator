@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campaign Setup &amp; Brief Generation — Product Prototype</title>
+<meta name="description" content="Interactive prototype accompanying the Pluvus Product Engineering Assessment by Sudhanshu Patil.">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ================= RAIL ================= -->
+  <nav class="rail">
+    <div class="brandmark">
+      <div class="dot"></div>
+      <div><b>Campaign Setup</b><span>Product prototype</span></div>
+    </div>
+
+    <div class="rail-label">Guided setup</div>
+    <button class="step on" data-go="s1"><span class="n">1</span><span>Start from a URL</span></button>
+    <button class="step" data-go="s2"><span class="n">2</span><span>Confirm what we found</span></button>
+    <button class="step" data-go="s3"><span class="n">3</span><span>Adaptive questions</span></button>
+
+    <div class="rail-label">Decision</div>
+    <button class="step" data-go="s4"><span class="n">4</span><span>Feasibility &amp; models<br><em class="tiny muted" style="font-style:normal">live engine</em></span></button>
+
+    <div class="rail-label">Brief</div>
+    <button class="step" data-go="s5"><span class="n">5</span><span>Campaign canvas</span></button>
+    <button class="step" data-go="s6"><span class="n">6</span><span>Review &amp; approve</span></button>
+    <button class="step" data-go="s7"><span class="n">7</span><span>Approved brief</span></button>
+
+    <div class="rail-label">Downstream</div>
+    <button class="step" data-go="s8"><span class="n">8</span><span>Creator deal override</span></button>
+    <button class="step" data-go="s9"><span class="n">9</span><span>System architecture</span></button>
+
+    <div class="rail-foot">
+      Prototype for the <b>Pluvus Product Engineering Assessment</b>.<br>
+      Sudhanshu Patil<br><br>
+      Screen 4 runs the real feasibility engine — the same <code>engine.js</code> whose formulas appear in the written proposal.
+    </div>
+  </nav>
+
+  <!-- ================= MAIN ================= -->
+  <main class="main">
+
+  <!-- ---------- 1. ENTRY ---------- -->
+  <section class="screen on" id="s1">
+    <div class="head">
+      <div class="eyebrow">Step 1 of 7 · about 30 seconds</div>
+      <h1>Start with a URL, not a questionnaire</h1>
+      <p class="sub">The brand gives us three things it already knows. Everything the brand would answer badly — average order value, margin, inventory, shipping coverage — we read from its store instead of asking.</p>
+    </div>
+
+    <div class="grid g-side">
+      <div class="card">
+        <div class="card-h"><h3>New campaign</h3><div class="sp"></div><span class="chip grey">Draft</span></div>
+        <div class="card-b">
+          <div class="field">
+            <label class="f">Brand website</label>
+            <input type="text" value="https://lumenskin.co" spellcheck="false">
+            <div class="tiny muted" style="margin-top:4px">We read the homepage, product, about, shipping and FAQ pages — up to 15, sitemap-guided.</div>
+          </div>
+          <div class="field">
+            <label class="f">What is this campaign for?</label>
+            <select><option>Drive sales</option><option>Drive traffic</option><option>Build awareness</option><option>Generate content / UGC</option><option>Launch a product</option></select>
+          </div>
+          <div class="grid g2 field">
+            <div><label class="f">Budget (optional)</label><input type="text" value="$3,000"></div>
+            <div><label class="f">Live by</label><input type="text" value="8 Sep 2026"></div>
+          </div>
+          <div class="mt"><button class="btn pri" data-go="s2">Analyse brand →</button>
+            <button class="btn" data-go="s2">Skip, I'll fill it in myself</button></div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <div class="card-h"><h3>Connected data</h3><div class="sp"></div><span class="chip ok">2 connected</span></div>
+          <div class="card-b stack">
+            <div class="row"><span class="chip ok">✓</span><div style="flex:1"><b class="small">Shopify</b><div class="tiny muted">AOV, gross margin, inventory on hand, shipping zones</div></div></div>
+            <div class="row"><span class="chip ok">✓</span><div style="flex:1"><b class="small">Stripe</b><div class="tiny muted">Conversion rate, refund rate, payout rails</div></div></div>
+            <div class="note tiny" style="margin-top:4px"><b>Why this matters:</b> these five fields gate every partnership model. Read from the store they are facts; asked in a form they are guesses. Connecting a store removes an average of <b>6 questions</b> from setup.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>What happens next</h3></div>
+          <div class="card-b">
+            <div class="flow">
+              <span class="n det">Fetch &amp; snapshot</span><span class="a">→</span>
+              <span class="n ai">Extract facts</span><span class="a">→</span>
+              <span class="n det">Validate &amp; ground</span><span class="a">→</span>
+              <span class="n hum">You confirm</span>
+            </div>
+            <div class="legend mt"><span><i style="background:var(--ai-soft);border:1px solid var(--ai)"></i>AI</span><span><i style="background:var(--accent-soft);border:1px solid var(--accent)"></i>Deterministic</span><span><i style="background:var(--ok-soft);border:1px solid var(--ok)"></i>Human</span></div>
+            <p class="tiny muted mt" style="margin-bottom:0">Ingestion is asynchronous. The brand answers question one while it runs, so a 40-second crawl costs nothing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 2. EXTRACTION REVIEW ---------- -->
+  <section class="screen" id="s2">
+    <div class="head">
+      <div class="eyebrow">Step 2 of 7</div>
+      <h1>Confirm what we found</h1>
+      <p class="sub">Confirmation is cheap; typing is expensive. Every extracted fact carries its source and confidence. High-confidence facts are pre-accepted and editable. Low-confidence facts must be confirmed. Anything with legal or financial consequence is never auto-filled at all.</p>
+    </div>
+
+    <div class="row wrap" style="margin-bottom:13px">
+      <span class="chip ok">6 auto-accepted</span>
+      <span class="chip warn">2 need confirming</span>
+      <span class="chip danger">2 you must answer</span>
+      <span class="chip info">1 conflict</span>
+      <div class="sp" style="flex:1"></div>
+      <button class="btn pri" data-go="s3">Confirm all &amp; continue →</button>
+    </div>
+
+    <div class="mods">
+      <div class="mod">
+        <div class="mh"><b>Category</b><span class="chip ok">96%</span></div>
+        <dl><dt>Extracted</dt><dd>Skincare — clean beauty, vegan</dd></dl>
+        <div class="src">“clean, vegan skincare made in small batches” — lumenskin.co/about</div>
+      </div>
+      <div class="mod">
+        <div class="mh"><b>Average order value</b><span class="chip ok">Connected</span></div>
+        <dl><dt>From Shopify · 90-day</dt><dd>$48.20</dd></dl>
+        <div class="src" style="color:var(--ok)">shopify.orders — not asked, not guessed</div>
+      </div>
+      <div class="mod">
+        <div class="mh"><b>Gross margin</b><span class="chip ok">Connected</span></div>
+        <dl><dt>From Shopify cost-of-goods</dt><dd>68%</dd></dl>
+        <div class="src" style="color:var(--ok)">Sets the commission ceiling downstream</div>
+      </div>
+      <div class="mod">
+        <div class="mh"><b>Inventory on hand</b><span class="chip ok">Connected</span></div>
+        <dl><dt>Giftable units</dt><dd>200 units · hero SKU</dd></dl>
+        <div class="src" style="color:var(--ok)">shopify.inventory_levels</div>
+      </div>
+      <div class="mod">
+        <div class="mh"><b>Shipping coverage</b><span class="chip warn">71%</span></div>
+        <dl><dt>Extracted</dt><dd>US + Canada</dd></dl>
+        <div class="src">lumenskin.co/shipping — page mentions “select international”. Confirm your gifting geography.</div>
+        <div class="row" style="margin-top:8px"><button class="btn sm ok">Confirm</button><button class="btn sm">Edit</button></div>
+      </div>
+      <div class="mod">
+        <div class="mh"><b>Audience</b><span class="chip warn">64%</span></div>
+        <dl><dt>Inferred</dt><dd>Women 24–38, US metro</dd></dl>
+        <div class="src">Inferred from imagery and copy tone — no explicit statement found. Low confidence by design.</div>
+        <div class="row" style="margin-top:8px"><button class="btn sm ok">Confirm</button><button class="btn sm">Edit</button></div>
+      </div>
+      <div class="mod" style="border-color:#f3c9c6">
+        <div class="mh"><b>Product claims</b><span class="chip danger">You must confirm</span></div>
+        <dl><dt>Found on site</dt><dd>“reduces fine lines in 14 days”</dd></dl>
+        <div class="src" style="color:var(--danger)">Regulated claim. Never auto-filled — creators repeating an unsubstantiated claim creates liability for the brand, not for us.</div>
+        <div class="row" style="margin-top:8px"><button class="btn sm">Approve claim</button><button class="btn sm">Prohibit</button></div>
+      </div>
+      <div class="mod" style="border-color:#f3c9c6">
+        <div class="mh"><b>Negotiation ceiling</b><span class="chip danger">You must set</span></div>
+        <dl><dt>System suggests</dt><dd>40% max commission</dd></dl>
+        <div class="src" style="color:var(--danger)">A money limit is never inferred. The system computes a safe maximum; a human sets the actual one.</div>
+      </div>
+      <div class="mod" style="border-color:#d5cff5">
+        <div class="mh"><b>Conflict</b><span class="chip info">⚡ Blocking</span></div>
+        <dl>
+          <dt>Site says</dt><dd>“100% vegan formula” — /about</dd>
+          <dt>Ingredients page says</dt><dd>“beeswax” — /products/balm</dd>
+        </dl>
+        <div class="src" style="color:var(--info)">Not silently resolved. Both sources kept; approval of this field is blocked until a human decides.</div>
+      </div>
+    </div>
+
+    <div class="note ai mt"><b>Where the AI stopped.</b> It read pages and proposed structured facts with evidence. It did not decide the shipping geography, did not approve a regulated claim, did not resolve the conflict, and did not set a single number that costs money. Those are the four things it is not allowed to do.</div>
+  </section>
+
+  <!-- ---------- 3. ADAPTIVE QUESTION ---------- -->
+  <section class="screen" id="s3">
+    <div class="head">
+      <div class="eyebrow">Step 3 of 7 · question 3 of an expected 6</div>
+      <h1>One question at a time, chosen by value</h1>
+      <p class="sub">There is no fixed questionnaire. A deterministic selector ranks a question bank by <code>Δ feasibility certainty ÷ effort to answer</code> and asks the top one. A model only rephrases it. Answering a question can remove three others.</p>
+    </div>
+
+    <div class="grid g-side">
+      <div class="card qcard">
+        <div class="card-h"><h3>Question 3</h3><div class="sp"></div><span class="chip ai">✨ phrased by agent</span></div>
+        <div class="card-b">
+          <div style="margin-bottom:12px"><div class="meter" style="margin-bottom:6px"><i style="width:50%"></i></div><div class="tiny muted">3 of ~6 · median brand finishes in 8</div></div>
+          <h2 style="font-size:16px;margin-bottom:4px">Do you need guaranteed posts, or is reach on a best-effort basis acceptable?</h2>
+          <p class="small muted">You told us this campaign is for sales, and your store is connected — so commission models are on the table.</p>
+          <div class="stack mt">
+            <button class="qopt" data-go="s4"><b>I need guaranteed deliverables</b><span>Contracted posts, on a date. Requires cash — rules out pure affiliate and gifting.</span></button>
+            <button class="qopt" data-go="s4"><b>Best effort is fine</b><span>Pay only for results. Unlocks affiliate and gifting at much larger creator volume.</span></button>
+            <button class="qopt" data-go="s4"><b>A guaranteed minimum, then upside</b><span>Small base fee plus commission. Points at a hybrid structure.</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <div class="card-h"><h3>Why this question, now</h3></div>
+          <div class="card-b">
+            <table>
+              <tr><th>Candidate question</th><th class="num">Gain</th><th class="num">Effort</th><th class="num">Rank</th></tr>
+              <tr><td><b>Deliverable certainty</b></td><td class="num">0.31</td><td class="num">1</td><td class="num"><b>0.31</b></td></tr>
+              <tr><td>Creator tier</td><td class="num">0.18</td><td class="num">1</td><td class="num">0.18</td></tr>
+              <tr><td>Usage rights term</td><td class="num">0.22</td><td class="num">2</td><td class="num">0.11</td></tr>
+              <tr><td>Placement mix</td><td class="num">0.09</td><td class="num">1</td><td class="num">0.09</td></tr>
+              <tr><td class="muted">Target revenue</td><td class="num muted">0.14</td><td class="num muted">3</td><td class="num muted">0.05</td></tr>
+            </table>
+            <p class="tiny muted mt" style="margin-bottom:0">Selection is deterministic: auditable, sub-millisecond, free, and incapable of looping forever. The model's only job here is wording.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>Questions we did not ask</h3></div>
+          <div class="card-b">
+            <div class="stack small">
+              <div class="row"><span class="chip ok">skipped</span><span>AOV, margin, inventory, shipping — <b>read from Shopify</b></span></div>
+              <div class="row"><span class="chip ok">skipped</span><span>Category, positioning, tone — <b>extracted from site</b></span></div>
+              <div class="row"><span class="chip grey">not yet</span><span>Gifting logistics — only asked if gifting survives its gates</span></div>
+              <div class="row"><span class="chip grey">not yet</span><span>Commission tiers — only asked for performance models</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 4. FEASIBILITY — LIVE ---------- -->
+  <section class="screen" id="s4">
+    <div class="head">
+      <div class="eyebrow">Step 4 of 7 · live engine</div>
+      <h1>Feasibility verdict</h1>
+      <p class="sub">Everything below is computed by <code>engine.js</code> — the same deterministic module described in the proposal. Change any input and watch the eligibility gates flip, the models re-rank and the readiness state change. No model call is involved in producing a single number on this screen.</p>
+    </div>
+
+    <div class="grid g-side">
+      <!-- inputs -->
+      <div class="stack">
+        <div id="verdictBox" class="verdict ok"></div>
+
+        <div class="card">
+          <div class="card-h"><h3>Eligibility gates</h3><div class="sp"></div><span class="tiny muted">hard booleans · a score cannot rescue a failure</span></div>
+          <div class="card-b" id="gatesBox"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3>Ranked options</h3><div class="sp"></div><span class="tiny muted">scored only over models that passed</span></div>
+          <div class="card-b stack" id="optsBox"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3>Derived economics</h3><div class="sp"></div><span class="chip grey">arithmetic only</span></div>
+          <div class="card-b" id="econBox"></div>
+        </div>
+      </div>
+
+      <!-- controls -->
+      <div class="stack" style="position:sticky;top:20px">
+        <div class="card">
+          <div class="card-h"><h3>Campaign inputs</h3><div class="sp"></div><button class="btn sm" id="resetBtn">Reset</button></div>
+          <div class="card-b">
+            <div class="field"><label class="f">Objective</label>
+              <select id="i_objective"><option value="sales">Drive sales</option><option value="traffic">Drive traffic</option><option value="awareness">Build awareness</option><option value="content_ugc">Generate content / UGC</option><option value="launch">Launch a product</option></select></div>
+            <div class="field"><label class="f">Product type</label>
+              <select id="i_product_type"><option value="physical">Physical good</option><option value="digital">Digital product</option><option value="service">Service</option><option value="subscription">Subscription</option></select></div>
+            <div class="grid g2 field">
+              <div><label class="f">Cash budget</label><input type="number" id="i_budget_cash" step="250"></div>
+              <div><label class="f">Creators wanted</label><input type="number" id="i_desired_creator_count"></div>
+            </div>
+            <div class="grid g2 field">
+              <div><label class="f">AOV ($)</label><input type="number" id="i_aov"></div>
+              <div><label class="f">Gross margin <span id="mv" class="muted"></span></label><input type="range" id="i_gross_margin" min="0" max="95" step="1"></div>
+            </div>
+            <div class="grid g2 field">
+              <div><label class="f">Giftable units</label><input type="number" id="i_units_available"></div>
+              <div><label class="f">Days to launch</label><input type="number" id="i_days_until_launch"></div>
+            </div>
+            <div class="grid g2 field">
+              <div><label class="f">Creator tier</label><select id="i_creator_tier"><option value="nano">Nano · $75</option><option value="micro">Micro · $250</option><option value="mid">Mid · $900</option><option value="macro">Macro · $3,000</option></select></div>
+              <div><label class="f">Review capacity</label><select id="i_review_capacity"><option value="low">Low · 10</option><option value="medium">Medium · 40</option><option value="high">High · 150</option></select></div>
+            </div>
+            <div class="field"><label class="f">Usage rights</label>
+              <select id="i_content_rights"><option value="organic_only">Organic only</option><option value="whitelisting">Whitelisting</option><option value="paid_usage">Paid usage (needs cash)</option></select></div>
+            <div class="field row" style="gap:16px">
+              <label class="row tiny" style="gap:6px;font-weight:600"><input type="checkbox" id="i_can_track_conversions" style="width:auto"> Tracking connected</label>
+              <label class="row tiny" style="gap:6px;font-weight:600"><input type="checkbox" id="i_ships_to_target_geo" style="width:auto"> Ships to target geo</label>
+            </div>
+            <div class="field"><label class="row tiny" style="gap:6px;font-weight:600"><input type="checkbox" id="i_requires_content_approval" style="width:auto"> Brand approves content before posting (+5 days)</label></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3>Try a scenario</h3></div>
+          <div class="card-b stack">
+            <button class="btn sm" data-scn="A" style="width:100%;text-align:left">A · Skincare DTC — $3k, 25 creators, 200 units</button>
+            <button class="btn sm" data-scn="B" style="width:100%;text-align:left">B · SaaS launch — $500, 50 creators, no tracking</button>
+            <button class="btn sm" data-scn="C" style="width:100%;text-align:left">C · B rescoped on our own advice</button>
+            <button class="btn sm" data-scn="D" style="width:100%;text-align:left">D · Premium furniture — high AOV, high COGS</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3>Derived negotiation policy</h3><div class="sp"></div><span class="chip danger">internal</span></div>
+          <div class="card-b" id="policyBox"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 5. CANVAS ---------- -->
+  <section class="screen" id="s5">
+    <div class="head">
+      <div class="eyebrow">Step 5 of 7</div>
+      <h1>Campaign canvas</h1>
+      <p class="sub">The brief is a grid of typed modules, not a wall of generated prose. Every module carries a status, and every value carries its provenance. The question a brand always has — <em>what do I do next?</em> — is answered at the top of the page, not buried in paragraph nine.</p>
+    </div>
+
+    <div class="grid g-side" style="margin-bottom:14px">
+      <div class="card">
+        <div class="card-b">
+          <div class="row" style="margin-bottom:8px"><b style="font-size:14px;flex:1">Readiness — 9 of 11 modules approved</b><span class="chip warn">Feasible with changes</span></div>
+          <div class="meter warn" style="margin-bottom:11px"><i style="width:82%"></i></div>
+          <div class="stack small">
+            <div class="row"><span class="chip danger">⚡</span><span><b>Conflict on “vegan” claim</b> — site and ingredients page disagree. Blocks Content Rules.</span><span class="sp" style="flex:1"></span><button class="btn sm">Resolve</button></div>
+            <div class="row"><span class="chip warn">⚠</span><span><b>Usage rights unset</b> — outreach agent cannot state a term without it.</span><span class="sp" style="flex:1"></span><button class="btn sm">Set</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-b">
+          <div class="legend" style="gap:10px">
+            <span><span class="chip ok">✓ Approved</span></span>
+            <span><span class="chip warn">⚠ Needs review</span></span>
+            <span><span class="chip ai">✨ AI-suggested</span></span>
+            <span><span class="chip danger">✕ Missing</span></span>
+            <span><span class="chip info">⚡ Conflict</span></span>
+          </div>
+          <p class="tiny muted mt" style="margin-bottom:0">Status is a property of the <b>field</b>, not of the document. A module is approved only when every field inside it is. This is what makes “approved” mean something to a downstream agent.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mods" style="grid-template-columns:repeat(4,1fr)">
+      <div class="mod"><div class="mh"><b>Brand &amp; product</b><span class="chip ok">✓</span></div><dl><dt>Category</dt><dd>Clean skincare</dd><dt>Hero SKU</dt><dd>Renewal Balm · $48</dd></dl><div class="prov"><span class="tag ai">AI</span> lumenskin.co/about · 96%</div></div>
+      <div class="mod"><div class="mh"><b>Audience</b><span class="chip ok">✓</span></div><dl><dt>Primary</dt><dd>Women 24–38, US metro</dd><dt>Geography</dt><dd>US, CA</dd></dl><div class="prov"><span class="tag brand">Brand</span> confirmed 28 Jul</div></div>
+      <div class="mod"><div class="mh"><b>Objective &amp; KPIs</b><span class="chip ok">✓</span></div><dl><dt>Objective</dt><dd>Drive sales</dd><dt>Target</dt><dd>$30,000 · 625 orders</dd></dl><div class="prov"><span class="tag sys">System</span> 625 = $30,000 ÷ $48 AOV</div></div>
+      <div class="mod"><div class="mh"><b>Model &amp; economics</b><span class="chip ok">✓</span></div><dl><dt>Structure</dt><dd>Performance affiliate</dd><dt>Default rate</dt><dd>20% · ceiling 40%</dd></dl><div class="prov"><span class="tag sys">System</span> ceiling = margin × (1 − retained)</div></div>
+      <div class="mod"><div class="mh"><b>Creator profile</b><span class="chip ok">✓</span></div><dl><dt>Tier</dt><dd>Micro · 10–100k</dd><dt>Platforms</dt><dd>Instagram, TikTok</dd></dl><div class="prov"><span class="tag brand">Brand</span> confirmed 28 Jul</div></div>
+      <div class="mod"><div class="mh"><b>Deliverables</b><span class="chip ok">✓</span></div><dl><dt>Per creator</dt><dd>1 Reel + 2 Stories</dd><dt>Window</dt><dd>14 days from ship</dd></dl><div class="prov"><span class="tag brand">Brand</span> confirmed 28 Jul</div></div>
+      <div class="mod" style="border-color:#d5cff5"><div class="mh"><b>Content rules</b><span class="chip info">⚡</span></div><dl><dt>Must include</dt><dd>#ad, @lumenskin</dd><dt>Claims</dt><dd class="mono" style="color:var(--info)">conflict — unresolved</dd></dl><div class="prov"><span class="tag ai">AI</span> two sources disagree · blocked</div></div>
+      <div class="mod" style="border-color:#f0dcb8"><div class="mh"><b>Usage rights</b><span class="chip warn">⚠</span></div><dl><dt>Term</dt><dd class="muted">not set</dd><dt>Whitelisting</dt><dd class="muted">not set</dd></dl><div class="prov"><span class="tag sys">System</span> required before approval</div></div>
+      <div class="mod"><div class="mh"><b>Tracking</b><span class="chip ok">✓</span></div><dl><dt>Attribution</dt><dd>Shopify + Stripe</dd><dt>Codes</dt><dd>Per-creator, auto</dd></dl><div class="prov"><span class="tag conn">Connected</span> verified live</div></div>
+      <div class="mod"><div class="mh"><b>Timeline</b><span class="chip ok">✓</span></div><dl><dt>Live by</dt><dd>8 Sep 2026</dd><dt>Pipeline</dt><dd>40 days · 2 days slack</dd></dl><div class="prov"><span class="tag sys">System</span> sourcing 7 + outreach 10 + …</div></div>
+      <div class="mod"><div class="mh"><b>Approvals &amp; escalation</b><span class="chip ok">✓</span></div><dl><dt>Auto-approve</dt><dd>≤ 32% commission</dd><dt>Escalate to</dt><dd>Head of Growth</dd></dl><div class="prov"><span class="tag brand">Brand</span> internal · never shown to creators</div></div>
+      <div class="mod" style="background:var(--ai-soft);border-color:#e3ccf5"><div class="mh"><b>3 AI suggestions</b><span class="chip ai">✨</span></div><dl><dt>Pending</dt><dd>Creative direction, do/don't list, tier ladder</dd></dl><div class="row" style="margin-top:8px"><button class="btn sm pri" data-go="s6">Review changes</button></div></div>
+    </div>
+  </section>
+
+  <!-- ---------- 6. DIFF / APPROVAL ---------- -->
+  <section class="screen" id="s6">
+    <div class="head">
+      <div class="eyebrow">Step 6 of 7 · the promotion barrier</div>
+      <h1>Approving is reviewing a changeset</h1>
+      <p class="sub">An AI suggestion is written to a <code>proposals</code> table that no downstream agent can read. It becomes a campaign term only when a human with <code>campaign:approve</code> accepts this diff — a single transaction that writes an immutable version and an audit row. There is no other path.</p>
+    </div>
+
+    <div class="grid g-side">
+      <div class="stack">
+        <div class="diff">
+          <div class="dh"><span class="chip ai">✨ AI</span><b>Commission ladder — Model &amp; economics</b><span class="chip warn">within ceiling</span></div>
+          <div class="dl rm"><span class="g">−</span><span>default_commission: 20% flat</span></div>
+          <div class="dl add"><span class="g">+</span><span>default_commission: 20% · tier_2: 25% after 10 orders · tier_3: 30% after 25 orders</span></div>
+          <div class="dact"><button class="btn ok sm">Accept</button><button class="btn sm">Reject</button><button class="btn sm">Edit then accept</button>
+            <span class="sp" style="flex:1"></span><span class="tiny muted">Max 30% ≤ 40% ceiling · bounds-checked before render</span></div>
+        </div>
+
+        <div class="diff">
+          <div class="dh"><span class="chip ai">✨ AI</span><b>Creative direction — Content rules</b><span class="chip grey">prose</span></div>
+          <div class="dl add"><span class="g">+</span><span>“Morning-routine framing, natural light, no clinical/lab settings. Show texture on skin.”</span></div>
+          <div class="dact"><button class="btn ok sm">Accept</button><button class="btn sm">Reject</button>
+            <span class="sp" style="flex:1"></span><span class="tiny muted">Grounded in 4 site passages · <a href="#">view sources</a></span></div>
+        </div>
+
+        <div class="diff" style="border-color:#f3c9c6">
+          <div class="dh"><span class="chip danger">✕ Rejected by the system</span><b>Commission rate</b></div>
+          <div class="dl rm"><span class="g">−</span><span>proposed_commission: 55%</span></div>
+          <div class="dact"><span class="tiny" style="color:var(--danger)"><b>Never rendered to the brand.</b> 55% exceeds the 40% derived ceiling, so layer 3 of the validator rejected it before this screen existed. The brand cannot accidentally approve what it is never shown.</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3>Approve campaign v7</h3><div class="sp"></div><span class="chip warn">1 blocker</span></div>
+          <div class="card-b">
+            <div class="stack small">
+              <div class="row"><span class="chip ok">✓</span><span>All required fields present</span></div>
+              <div class="row"><span class="chip ok">✓</span><span>All terms within derived bounds</span></div>
+              <div class="row"><span class="chip ok">✓</span><span>Approver holds <code>campaign:approve</code></span></div>
+              <div class="row"><span class="chip danger">✕</span><span>Unresolved conflict on the “vegan” claim</span></div>
+            </div>
+            <div class="row mt"><button class="btn pri" disabled>Approve &amp; arm agents</button><button class="btn" data-go="s7">Resolve conflict, then approve →</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <div class="card-h"><h3>What approval actually writes</h3></div>
+          <div class="card-b"><pre class="json"><span class="c">// one transaction, no partial states</span>
+<span class="k">INSERT</span> campaign_versions (v7, frozen_state)
+<span class="k">UPDATE</span> campaigns  SET approved_version = 7
+<span class="k">UPDATE</span> proposals  SET status = 'promoted'
+<span class="k">INSERT</span> audit_log  (
+  actor      = <span class="s">'user_8813'</span>,
+  action     = <span class="s">'campaign.approve'</span>,
+  permission = <span class="s">'campaign:approve'</span>,
+  diff       = <span class="s">'3 fields'</span>,
+  at         = <span class="s">'2026-07-28T14:22:09Z'</span> )</pre></div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>Four-layer validation</h3></div>
+          <div class="card-b">
+            <div class="stack small">
+              <div><b>1 · Schema</b><div class="tiny muted">Strict types. Reject, retry once, then fall back to asking a human.</div></div>
+              <div><b>2 · Groundedness</b><div class="tiny muted">Every fact needs a source URL and a verbatim span. Unsourced facts are dropped, not stored.</div></div>
+              <div><b>3 · Business rules</b><div class="tiny muted">Bounds-checked against derived limits <em>before</em> anything reaches a screen.</div></div>
+              <div><b>4 · Provenance</b><div class="tiny muted">Source, model, prompt version, confidence and evidence stamped on every value.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 7. APPROVED BRIEF ---------- -->
+  <section class="screen" id="s7">
+    <div class="head">
+      <div class="eyebrow">Step 7 of 7</div>
+      <h1>One state, three audiences</h1>
+      <p class="sub">The brief is a projection of structured state, not a document that state was parsed out of. The same approved version renders for the brand, for a creator, and for the outreach agent — through one serializer, where every field's visibility tier defaults to <b>internal</b>. A field cannot leak by being forgotten.</p>
+    </div>
+
+    <div class="row" style="margin-bottom:14px">
+      <div class="views" id="viewSwitch">
+        <button class="on" data-view="brand">Brand view</button>
+        <button data-view="creator">Creator view</button>
+        <button data-view="agent">Agent view · JSON</button>
+      </div>
+      <span class="sp" style="flex:1"></span>
+      <span class="chip ok">✓ Approved · v7</span><span class="chip grey">28 Jul 2026 · Priya R.</span>
+    </div>
+
+    <div id="v_brand">
+      <div class="mods" style="grid-template-columns:repeat(3,1fr)">
+        <div class="mod"><div class="mh"><b>Model &amp; economics</b><span class="chip ok">✓</span></div><dl><dt>Structure</dt><dd>Performance affiliate</dd><dt>Default commission</dt><dd>20%, laddering to 30%</dd><dt class="mono" style="color:var(--danger)">Ceiling · internal</dt><dd class="mono" style="color:var(--danger)">40% · auto-approve ≤ 32%</dd><dt class="mono" style="color:var(--danger)">Max total · internal</dt><dd class="mono" style="color:var(--danger)">$3,000</dd></dl></div>
+        <div class="mod"><div class="mh"><b>Deliverables</b><span class="chip ok">✓</span></div><dl><dt>Per creator</dt><dd>1 Reel + 2 Stories</dd><dt>Window</dt><dd>14 days from ship</dd><dt>Approval</dt><dd>Brand reviews before posting</dd></dl></div>
+        <div class="mod"><div class="mh"><b>Content rules</b><span class="chip ok">✓</span></div><dl><dt>Required</dt><dd>#ad, @lumenskin, code in bio</dd><dt>Prohibited claims</dt><dd>“reduces fine lines in 14 days”</dd><dt>Resolved conflict</dt><dd>Not vegan — contains beeswax</dd></dl></div>
+      </div>
+      <div class="note mt"><b>Internal fields are visible here and nowhere else.</b> The ceiling, the escalation threshold and the total commitment are the brand's private bargaining position. They are the reason the negotiation agent can act autonomously without being able to overspend.</div>
+    </div>
+
+    <div id="v_creator" style="display:none">
+      <div class="card" style="max-width:760px">
+        <div class="card-h"><h3>Lumen Skin — Autumn Renewal</h3><div class="sp"></div><span class="chip ok">Open to creators</span></div>
+        <div class="card-b">
+          <div class="kv">
+            <dt>What you get</dt><dd>20% commission on every sale, rising to 30%</dd>
+            <dt>Plus</dt><dd>Renewal Balm, free, shipped to you</dd>
+            <dt>What we ask</dt><dd>1 Reel + 2 Stories within 14 days of delivery</dd>
+            <dt>Must include</dt><dd>#ad, @lumenskin, your code in bio</dd>
+            <dt>Please avoid</dt><dd>Anti-ageing or clinical-results claims</dd>
+            <dt>Usage</dt><dd>Organic only — we will not run paid ads on your content</dd>
+            <dt>Payment</dt><dd>Monthly, automatic, 30 days after the order clears</dd>
+          </div>
+          <div class="note warn mt"><b class="small">The same fields, filtered.</b> No ceiling, no escalation threshold, no budget, no margin, no fit score. This view is generated by <code>project(campaign, 'creator')</code> — the identical function that produced the brand view above.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="v_agent" style="display:none">
+      <div class="grid g-side">
+        <pre class="json"><span class="c">GET /campaigns/c_8f2a/context?consumer=outreach_agent</span>
+{
+  <span class="k">"campaign_version_id"</span>: <span class="s">"cv_7"</span>,       <span class="c">// pinned; amendments mint v8</span>
+  <span class="k">"approved_at"</span>: <span class="s">"2026-07-28T14:22:09Z"</span>,
+  <span class="k">"model"</span>: <span class="s">"performance_affiliate"</span>,
+  <span class="k">"pitch"</span>: {
+    <span class="k">"commission_opening"</span>: <span class="n2">0.20</span>,
+    <span class="k">"ladder"</span>: [<span class="n2">0.25</span>, <span class="n2">0.30</span>],
+    <span class="k">"gift_included"</span>: <span class="b">true</span>,
+    <span class="k">"deliverables"</span>: <span class="s">"1 Reel + 2 Stories / 14d"</span>
+  },
+  <span class="k">"creator_profile"</span>: {
+    <span class="k">"tier"</span>: <span class="s">"micro"</span>,
+    <span class="k">"platforms"</span>: [<span class="s">"instagram"</span>, <span class="s">"tiktok"</span>],
+    <span class="k">"geo"</span>: [<span class="s">"US"</span>, <span class="s">"CA"</span>]
+  },
+  <span class="k">"must_not_say"</span>: [<span class="s">"reduces fine lines in 14 days"</span>,
+                  <span class="s">"vegan"</span>],
+  <span class="k">"negotiation_policy_ref"</span>: <span class="s">"np_7"</span>   <span class="c">// a REFERENCE, never the numbers</span>
+}
+
+<span class="c">// The outreach agent never receives the ceiling.
+// It proposes a term; the server checks it against
+// np_7 at deal-write time and refuses out-of-bounds
+// values. A creator's reply cannot raise a limit that
+// the agent was never holding.</span></pre>
+        <div class="stack">
+          <div class="card">
+            <div class="card-h"><h3>Context contracts</h3></div>
+            <div class="card-b">
+              <table>
+                <tr><th>Consumer</th><th>Receives</th></tr>
+                <tr><td><b>Sourcing</b></td><td>Creator profile, geo, platforms, category</td></tr>
+                <tr><td><b>Outreach</b></td><td>Pitch terms, deliverables, prohibited claims</td></tr>
+                <tr><td><b>Negotiation</b></td><td>Policy <em>reference</em> — bounds enforced server-side</td></tr>
+                <tr><td><b>Content review</b></td><td>Content rules, required tags, usage rights</td></tr>
+                <tr><td><b>Payouts</b></td><td>Resolved deal terms only</td></tr>
+              </table>
+              <p class="tiny muted mt" style="margin-bottom:0">Each contract is declared and verified in CI. Adding a field to the campaign does not expose it to anyone until a contract names it.</p>
+            </div>
+          </div>
+          <div class="note"><b>Approved only.</b> There is no read path from a downstream agent to draft state — not a filtered one, not a privileged one. Draft and approved are different tables.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 8. DEAL OVERRIDE ---------- -->
+  <section class="screen" id="s8">
+    <div class="head">
+      <div class="eyebrow">After negotiation</div>
+      <h1>Creator terms are instances, not edits</h1>
+      <p class="sub">A negotiated deal never modifies the campaign. It is a <code>Deal</code> that inherits campaign defaults, stores only what differs, and is bounds-checked against the negotiation policy on write. Campaign is to Deal as class is to instance.</p>
+    </div>
+
+    <div class="grid g-side">
+      <div class="card">
+        <div class="card-h"><h3>Deal · @mayaskincare</h3><div class="sp"></div><span class="chip ok">Signed · 24 Jul</span></div>
+        <div class="card-b">
+          <table>
+            <tr><th>Term</th><th>Campaign default</th><th>This deal</th><th>Stored</th></tr>
+            <tr><td>Commission</td><td class="muted">20%</td><td><b>27%</b></td><td><span class="chip warn">override</span></td></tr>
+            <tr><td>Base fee</td><td class="muted">$0</td><td><b>$150</b></td><td><span class="chip warn">override</span></td></tr>
+            <tr><td>Deliverables</td><td class="muted">1 Reel + 2 Stories</td><td>1 Reel + 2 Stories</td><td><span class="chip grey">inherited</span></td></tr>
+            <tr><td>Usage rights</td><td class="muted">Organic only</td><td>Organic only</td><td><span class="chip grey">inherited</span></td></tr>
+            <tr><td>Exclusivity</td><td class="muted">None</td><td>None</td><td><span class="chip grey">inherited</span></td></tr>
+          </table>
+          <div class="note mt small"><b>Two things are stored, deliberately.</b> The sparse <code>overrides</code> object — 2 keys, not 40 — is what makes portfolio questions answerable: <em>14 of 30 deals overrode commission upward, so your 20% default is too low.</em> The frozen <code>resolved_terms</code> snapshot is the legal truth, so amending the campaign to v8 tomorrow cannot retroactively change what this creator signed.</div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <div class="card-h"><h3>Negotiate a new deal</h3><div class="sp"></div><span class="chip danger">policy enforced</span></div>
+          <div class="card-b">
+            <div class="grid g2">
+              <div><label class="f">Commission %</label><input type="number" id="d_comm" value="27" min="0" max="100"></div>
+              <div><label class="f">Base fee $</label><input type="number" id="d_fee" value="150" min="0" step="25"></div>
+            </div>
+            <div id="dealMsg" class="mt"></div>
+            <button class="btn pri mt" id="d_save">Write deal</button>
+            <p class="tiny muted mt" style="margin-bottom:0">Try 45%, or a $600 fee. The check runs server-side at deal-write time — not in a prompt, and not in this browser in production.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>Deal record</h3></div>
+          <div class="card-b"><pre class="json" id="dealJson"></pre></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 9. ARCHITECTURE ---------- -->
+  <section class="screen" id="s9">
+    <div class="head">
+      <div class="eyebrow">Reference</div>
+      <h1>System architecture</h1>
+      <p class="sub">Input collection through brief approval to downstream access. Purple is non-deterministic and always validated; blue is deterministic; green requires a human.</p>
+    </div>
+    <div class="card"><div class="card-b arch"><div class="mermaid" id="archDiagram"></div></div></div>
+
+    <h2 style="font-size:16px;margin:22px 0 4px">The promotion barrier</h2>
+    <p class="small muted" style="max-width:78ch">How a suggestion becomes a term — and the three places it can die before it ever reaches a brand. This is the path that makes “an AI recommendation silently becoming an approved campaign term” structurally impossible rather than merely discouraged.</p>
+    <div class="card mt"><div class="card-b arch"><div class="mermaid" id="barrierDiagram"></div></div></div>
+
+    <div class="grid g3 mt">
+      <div class="card"><div class="card-h"><h3>Tenant isolation</h3></div><div class="card-b small stack">
+        <div>Postgres row-level security, <code>tenant_id</code> on every row.</div>
+        <div>Object storage keyed by tenant prefix.</div>
+        <div>No cross-tenant retrieval in any prompt; no shared embedding index.</div>
+        <div>Per-tenant cost and rate budgets.</div>
+      </div></div>
+      <div class="card"><div class="card-h"><h3>Failure handling</h3></div><div class="card-b small stack">
+        <div>Every failure degrades to <b>ask the human</b>, never to guess.</div>
+        <div>Durable steps, idempotency keys, per-step timeouts.</div>
+        <div>Per-campaign dollar budget guard with a circuit breaker.</div>
+        <div>Extraction is a pure function of a stored snapshot, so it is replayable.</div>
+      </div></div>
+      <div class="card"><div class="card-h"><h3>Cost &amp; latency</h3></div><div class="card-b small stack">
+        <div>Target ≤ <b>$0.35</b> per campaign setup.</div>
+        <div>Ingestion p95 ≤ 45s, asynchronous and non-blocking.</div>
+        <div>Interaction turn p95 ≤ 2.5s.</div>
+        <div>Small model for extraction and phrasing; frontier model only for strategy prose. Prompt caching across the session is the dominant lever.</div>
+      </div></div>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
