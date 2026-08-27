@@ -1,8 +1,8 @@
-# Campaign Setup & Brief Generation — Product Prototype
+# Campaign Setup & Brief Generation — Interactive Prototype
 
-Interactive prototype accompanying the **Pluvus Product Engineering Assessment**.
+An interactive prototype demonstrating an AI-guided campaign setup and brief generation system.
 
-**Live:** https://sudhanshu-patil.github.io/pluvus-campaign-brief/
+**Live:** https://sudhanshu-patil.github.io/AI-Campaign-Generator/
 
 Sudhanshu Patil · July 2026
 
@@ -10,14 +10,9 @@ Sudhanshu Patil · July 2026
 
 ## What this is
 
-A navigable prototype of the nine screens described in the written proposal, covering the path from a
-bare brand URL to an approved campaign brief and on to a negotiated creator deal.
+A navigable prototype of nine screens covering the path from a bare brand URL to an approved campaign brief and on to a negotiated creator deal.
 
-**Screen 4 is not a mockup.** It runs `engine.js`, the deterministic feasibility engine whose formulas,
-gates and weights are printed in the proposal. Change the budget, margin, inventory, tier or timeline and
-the eligibility gates flip, the partnership models re-rank and the readiness state changes — with no model
-call involved in producing any number on the page. Screen 8 uses the same engine's derived negotiation
-policy to refuse out-of-bounds deal terms.
+**Screen 4 is not a mockup.** It runs `engine.js`, the deterministic feasibility engine whose formulas, gates and weights are printed in the proposal. Change the budget, margin, inventory, tier or timeline and the eligibility gates flip, the partnership models re-rank and the readiness state changes — with no model call involved in producing any number on the page. Screen 8 uses the same engine's derived negotiation policy to refuse out-of-bounds deal terms.
 
 The document and the prototype therefore cannot drift: both quote one source of truth.
 
